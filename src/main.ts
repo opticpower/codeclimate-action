@@ -86,6 +86,8 @@ export function run(
 
     if (coverageLocations.length > 0) {
       //Run format-coverage on each location.
+      const parts: Array<string> = [];
+
       for (const i in coverageLocations) {
         const [location, type] = coverageLocations[i].split(':');
         const commands = [
@@ -97,6 +99,8 @@ export function run(
           `codeclimate.${i}.json`
         ];
         if (codeClimateDebug === 'true') commands.push('--debug');
+
+        parts.push(`codeclimate.${i}.json`);
 
         try {
           lastExitCode = await exec(executable, commands, execOpts);
@@ -110,7 +114,7 @@ export function run(
       //run sum coverage
       const sumCommands = [
         'sum-coverage',
-        'codeclimate.*.json',
+        ...parts,
         '-p',
         `${coverageLocations.length}`,
         '-o',
