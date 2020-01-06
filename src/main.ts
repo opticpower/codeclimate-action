@@ -84,13 +84,15 @@ export function run(
       return reject(err);
     }
 
-    if (!!coverageLocations.length) {
+    if (coverageLocations.length > 0) {
       //Run format-coverage on each location.
       for (const i in coverageLocations) {
         const location = coverageLocations[i];
         const commands = [
           'format-coverage',
           location.toString(),
+          '-t',
+          'lcov',
           '-o',
           `/tmp/codeclimate.${i}.json`
         ];
