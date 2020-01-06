@@ -110,7 +110,7 @@ export function run(
       //run sum coverage
       const sumCommands = [
         'sum-coverage',
-        'tmp/codeclimate.*.json',
+        '/tmp/codeclimate.*.json',
         '-o',
         `/tmp/coverage.total.json`
       ];
