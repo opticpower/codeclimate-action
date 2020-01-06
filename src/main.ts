@@ -87,12 +87,12 @@ export function run(
     if (coverageLocations.length > 0) {
       //Run format-coverage on each location.
       for (const i in coverageLocations) {
-        const location = coverageLocations[i];
+        const [location, type] = coverageLocations[i].split(':');
         const commands = [
           'format-coverage',
-          location.toString(),
+          location,
           '-t',
-          'lcov',
+          type,
           '-o',
           `/tmp/codeclimate.${i}.json`
         ];
@@ -162,9 +162,12 @@ if (!module.parent) {
   if (!coverageCommand.length) coverageCommand = DEFAULT_COVERAGE_COMMAND;
   let codeClimateDebug = getInput('debug', { required: false });
   if (!coverageCommand.length) codeClimateDebug = DEFAULT_CODECLIMATE_DEBUG;
-  const coverageLocations =
-    getInput('coverageLocations', { required: false }).split(' ') ||
-    DEFAULT_COVERAGE_LOCATIONS;
+  const coverageLocationsText = getInput('coverageLocations', {
+    required: false
+  });
+  const coverageLocations = coverageLocationsText.length
+    ? coverageLocationsText.split(' ')
+    : DEFAULT_COVERAGE_LOCATIONS;
 
   run(
     DOWNLOAD_URL,
