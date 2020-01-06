@@ -92,9 +92,7 @@ export function run(
           'format-coverage',
           location.toString(),
           '-o',
-          `/tmp/codeclimate.${i}.json`,
-          '--exit-code',
-          lastExitCode.toString()
+          `/tmp/codeclimate.${i}.json`
         ];
         if (codeClimateDebug === 'true') commands.push('--debug');
 
@@ -112,9 +110,7 @@ export function run(
         'sum-coverage',
         'tmp/codeclimate.*.json',
         '-o',
-        `/tmp/coverage.total.json`,
-        '--exit-code',
-        lastExitCode.toString()
+        `/tmp/coverage.total.json`
       ];
       if (codeClimateDebug === 'true') sumCommands.push('--debug');
 
@@ -130,14 +126,14 @@ export function run(
       const uploadCommands = [
         'upload-coverage',
         '-i',
-        `/tmp/coverage.total.json`,
-        '--exit-code',
-        lastExitCode.toString()
+        `/tmp/coverage.total.json`
       ];
       if (codeClimateDebug === 'true') uploadCommands.push('--debug');
 
       try {
         lastExitCode = await exec(executable, uploadCommands, execOpts);
+        debug('✅ CC Reporter after-build checkin completed!');
+        return resolve();
       } catch (err) {
         error(err);
         setFailed('🚨 CC Reporter after-build checkin failed!');
