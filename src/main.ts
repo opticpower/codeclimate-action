@@ -94,7 +94,7 @@ export function run(
           '-t',
           type,
           '-o',
-          `/tmp/codeclimate.${i}.json`
+          `codeclimate.${i}.json`
         ];
         if (codeClimateDebug === 'true') commands.push('--debug');
 
@@ -110,11 +110,11 @@ export function run(
       //run sum coverage
       const sumCommands = [
         'sum-coverage',
-        '/tmp/codeclimate.*.json',
+        'codeclimate.*.json',
         '-p',
         `${coverageLocations.length}`,
         '-o',
-        `/tmp/coverage.total.json`
+        `coverage.total.json`
       ];
       if (codeClimateDebug === 'true') sumCommands.push('--debug');
 
@@ -127,11 +127,7 @@ export function run(
       }
 
       //upload to code climate:
-      const uploadCommands = [
-        'upload-coverage',
-        '-i',
-        `/tmp/coverage.total.json`
-      ];
+      const uploadCommands = ['upload-coverage', '-i', `coverage.total.json`];
       if (codeClimateDebug === 'true') uploadCommands.push('--debug');
 
       try {
